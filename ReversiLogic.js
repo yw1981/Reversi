@@ -380,7 +380,7 @@ var isMoveOk = (function () {
 	   return {count: ct, status: false}; 
 }
   
-  function createMove(board, row, col, turnIndexBeforeMove, move)
+  function createMove(board, row, col, turnIndexBeforeMove)
   {
 		   if (board === undefined) {
 			board = [
@@ -517,7 +517,7 @@ var isMoveOk = (function () {
    try {
 	   var row = move[2].set.value.row;
 	   var col = move[2].set.value.col;
-	   var expectedMove = createMove(board, row, col, turnIndexBeforeMove, move);
+	   var expectedMove = createMove(board, row, col, turnIndexBeforeMove);
 	   if (!isEqual(move, expectedMove.move)) {
 		     return false;
 		   }
@@ -526,42 +526,84 @@ var isMoveOk = (function () {
    }
    return true;
   }
+ 
+  function exampleMoves(initTurnIndex, initState, arrayOfRowColComment) {
+  var state = initState;
+  var temp;
+  var store = [];
+  var turnIndex = initTurnIndex;
+
+  for (var i = 0; i < arrayOfRowColComment.length; i ++) {
+	  var rowColComment = arrayOfRowColComment[i];
+	  
+	  temp = createMove(state.board, rowColComment.row,
+			  			rowColComment.col, turnIndex);
+
+      var stateAfterMove = {board: temp.boardAfterSandwich, delta: temp.move[2].set.value}; 
+	  store.push({stateBeforeMove: state,
+		  		  stateAfterMove: stateAfterMove,
+		  		  turnIndexBeforeMove: turnIndex,
+		  		  turnIndexAfterMove: temp.move[0].setTurn.turnIndex,
+		  		  comment: {en: rowColComment.comment},
+		  		  move: temp.move});
+	  turnIndex = temp.move[0].setTurn.turnIndex;
+	  state = stateAfterMove;
+  }
+  return store;
+ }
+ 
+   
+  function exampleGame() {
+	  return (exampleMoves(0,
+			  			 {board:[['','','B','W','W','W','',''],
+			  			         ['','','B','B','W','W','',''],
+			  			         ['W','W','B','W','W','W','B','B'],
+			  			         ['W','B','W','W','B','W','B','B'],
+			  			         ['W','W','B','W','B','B','B','B'],
+			  			         ['W','W','W','B','W','B','W','W'],
+			  			         ['','','W','W','B','B','',''],
+			  			         ['','','W','B','B','B','','']],
+		  				 delta: {row: 2, col: 0}},
+		  				 [{row: 0, col: 6, comment: "Black plays on square (0,6)"}
+		  				 ,
+		  				 		{row: 0, col: 1, comment: "White plays on square (0,1)"}
+		  				 		,
+		  				  	 {row: 7, col: 1, comment: "Black plays row 7, col 1"},
+		  				  {row: 6, col: 6, comment: "Uh oh, white plays in x-Square"},
+		  				  	 {row: 7, col: 7, comment: "Black captures bottom-left corner!"},
+		  				  	{row: 6, col: 7, comment: "White plays (6,7)"}
+		  				  	 ]));
+  }
   
-  console.log(isMoveOk({turnIndexBeforeMove: 0, stateBeforeMove: {},
-	  		 move: [{setTurn: {turnIndex: 1}},
-	         {set: {key: 'board', value: [['', '', '', '', '', '', '', ''],
-	                        			 ['', '', '', '', '', '', '', ''],
-	                        			 ['', '', '', '', '', '', '', ''],
-	                        			 ['', '', 'B', 'W', 'B', '', '', ''],
-	                        			 ['', '', '', 'B', 'W', '', '', ''],
-	                        			 ['', '', '', '', '', '', '', ''],
-	                        			 ['', '', '', '', '', '', '', ''],
-	                        			 ['', '', '', '', '', '', '', '']
-	                        			 ]}},
-	         {set: {key: 'delta', value: {row: 3, col: 2}}}]}),
-	         
-	         isMoveOk({turnIndexBeforeMove: 1, stateBeforeMove: {board: [['', '', '', '', '', '', '', ''],
-	                            	                        			 ['', '', '', '', '', '', '', ''],
-	                            	                        			 ['', '', '', '', '', '', '', ''],
-	                            	                        			 ['', '', 'B', 'B', 'B', '', '', ''],
-	                            	                        			 ['', '', '', 'B', 'W', '', '', ''],
-	                            	                        			 ['', '', '', '', '', '', '', ''],
-	                            	                        			 ['', '', '', '', '', '', '', ''],
-	                            	                        			 ['', '', '', '', '', '', '', '']
-	                            	                        			 ],
-	                            	                        			 delta: {row: 3, col: 2}},
-	       	 move: [{setTurn: {turnIndex: 0}},
-	       	 {set: {key: 'board', value: [['', '', '', '', '', '', '', ''],
-	       	                        	  ['', '', '', '', '', '', '', ''],
-	       	                        	  ['', '', 'W', '', '', '', '', ''],
-	       	                        	  ['', '', 'B', 'B', 'B', '', '', ''],
-	       	                        	  ['', '', '', 'B', 'W', '', '', ''],
-	       	                        	  ['', '', '', '', '', '', '', ''],
-	       	                        	  ['', '', '', '', '', '', '', ''],
-	       	                        	  ['', '', '', '', '', '', '', '']
-	       	                        	  ]}},
-	       	         {set: {key: 'delta', value: {row: 2, col: 2}}}]})
-  );   
-	         
-  return isMoveOk;
+  function riddles() {
+	  return([
+	  			exampleMoves(1,
+			  			 {board:[['','','B','W','W','W','B',''],
+			  			         ['','B','B','B','W','W','W',''],
+			  			         ['W','W','B','W','W','W','B','B'],
+			  			         ['W','B','W','W','B','W','B','B'],
+			  			         ['W','W','B','W','B','B','B','B'],
+			  			         ['W','W','W','B','W','B','W','W'],
+			  			         ['','','W','W','B','B','',''],
+			  			         ['','','W','B','B','B','','']],
+		  				 delta: {row: 2, col: 0}},
+		  				 [{row: 0, col: 0, comment: "Where should White play to get an advantage on his next turn?"},
+		  				  	 {row: 6, col: 6, comment: "Black plays row 6, col 6"},
+		  				  	 {row: 7, col: 7, comment: "White captures diagonal!"}]),
+				exampleMoves(0,
+			  			 {board:[['','B','B','B','B','B','B',''],
+			  			         ['','','B','B','W','W','',''],
+			  			         ['W','W','B','W','W','W','B','B'],
+			  			         ['W','B','W','W','B','W','B','B'],
+			  			         ['W','W','B','W','B','B','B','B'],
+			  			         ['W','W','W','B','W','B','W','W'],
+			  			         ['','','W','W','B','B','',''],
+			  			         ['','','B','B','B','B','B','']],
+		  				 delta: {row: 3, col: 0}},
+		  				 [{row: 7, col: 1, comment: "Where should Black play to not give White an advantage on his next turn?"},
+		  				 {row: 1, col: 7, comment: "White in (1,7)"}])
+	  			]
+	 		 );
+  }
+  return {isMoveOk: isMoveOk, exampleGame: exampleGame, riddles: riddles};
  })();
