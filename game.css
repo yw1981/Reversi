@@ -1,0 +1,47 @@
+table{
+  margin: 0;
+  border-collapse: collapse;
+  display: block;
+  border-spacing: 0;
+  padding: 0;
+  float: left;
+}
+tr{
+  padding: 0;
+  border: 3px solid black;
+}
+
+td{
+border: 1px solid black;
+}
+
+body {
+  background-image: url('img/bg.jpg');
+}
+.cell{
+  position: relative;
+  float: left;
+  z-index: 10;
+  border: none;
+  width: 70px;
+  height: 70px;
+}
+.posit2{
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 50px;
+  z-index: 20;
+  left: 15%;
+  top: 20%;
+}
+
+.posit3{
+  position: absolute;
+  display: block;
+  width: 46px;
+  height: 46px;
+  z-index: 20;
+  left: 18%;
+  top: 22%;
+}
