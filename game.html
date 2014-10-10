@@ -10,31 +10,25 @@
   <script src="game.js"></script>
   <script src="gameLogic.js"></script>
   <script src="messageService.js"></script>
+  <script src="scaleBodyService.js"></script>
   <!-- for local testing purposes ! -->
   <script src="http://yoav-zibin.github.io/emulator/platform.js"></script>
+    <link rel="stylesheet" type="text/css" href="game.css">
 </head>
 <body ng-controller="Ctrl">
-  <textarea ng-model="jsonState" rows=10 cols=100 readonly></textarea>
-  <table border="1">
-    <tr width="50px" height="50px" ng-repeat="row in board track by $index">
-     <td width="50px" height="50px" ng-repeat="cell in row track by $index">&nbsp; {{cell}} &nbsp;</td>
-    </tr>
-  </table>
-  <textarea rows=10 cols=100 readonly>
-    All operations in GameApi:
-    [
-      {setTurn: {turnIndex: 1}},
-      {set: {key: "k", value: "v"}},
-      {endMatch: {endMatchScores: [42, -2]}},
-      {set: {key: "k", value: "v", visibleToPlayerIndexes: [0]}},
-      {setVisibility: {key: "k", visibleToPlayerIndexes: null}},
-      {shuffle: {keys: ["k1", "k2"]}},
-      {setRandomInteger: {key: "k", from: 0, to: 6}},
-      {"delete": {key: "k"}}
-    ]
-  </textarea>
-  <textarea ng-model="move" rows=10 cols=100></textarea>
-  <br>
-  <button ng-click="makeMove()">Make move</button>
+<table cellpadding="0">
+  <tr ng-repeat="row in board track by $index">
+    <td ng-repeat="cell in row track by $index"
+    ng-click="cellClicked($parent.$index, $index)">
+    <!--display the base board tile for every cell-->
+    <div ng-class="{cell:true}">
+      <img src = "img/piece2.jpg" div ng-class="{cell:true}" ng-show = "oddSum($parent.$index, $index)">
+      <img src = "img/piece1.jpg" ng-class = "{cell:true}" ng-show = "evenSum($parent.$index, $index)">
+      <img src = "img/bDisk.png" ng-class="{posit2: true}" ng-show= "isBlack($parent.$index, $index)">
+      <img src = "img/wDisk.png" ng-class="{posit3: true}" ng-show= "isWhite($parent.$index, $index)">
+    </div>
+    </td>
+  </tr>
+</table>
 </body>
 </html>
