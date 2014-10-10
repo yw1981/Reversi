@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('myApp',
-    ['myApp.messageService', 'myApp.gameLogic', 'platformApp'])
+    ['myApp.messageService', 'myApp.gameLogic', 'myApp.scaleBodyService', 'platformApp'])
   .controller('Ctrl', function (
       $window, $scope, $log,
-      messageService, stateService, gameLogic) {
+      messageService, scaleBodyService, stateService, gameLogic) {
 
     var isLocalTesting = $window.parent === $window;
 
@@ -67,6 +67,53 @@ angular.module('myApp',
         return;
       }
     };
+
+    //adding here
+    $scope.isWhite = function (row, col) {
+      if ($scope.board[row][col] === 'W')
+        {
+          return true;
+        }
+      else
+      {
+        return false;
+      }
+    }
+
+    $scope.isBlack = function (row, col) {
+      if ($scope.board[row][col] === 'B')
+        {
+          return true;
+        }
+      else
+        {
+            return false;
+        }
+    }
+
+    $scope.oddSum = function (row, col){
+      if ((row + col) % 2 !== 0)
+        {
+          return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    $scope.evenSum = function (row, col){
+      if ((row + col) % 2 === 0)
+        {
+          return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    scaleBodyService.scaleBody({width: 567, height: 567});
 
       if (isLocalTesting) {
       game.isMoveOk = gameLogic.isMoveOk;
