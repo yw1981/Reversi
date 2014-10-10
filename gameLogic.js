@@ -1,6 +1,5 @@
 /*jslint devel: true, indent: 1 */
 /*global console*/
-
   'use strict';
 angular.module('myApp.gameLogic', []).service('gameLogic', function() {
 
