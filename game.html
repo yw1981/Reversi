@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html manifest="game.appcache" lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Reversi</title>
   <meta name="description" content="Reversi game">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="components/angular/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.min.js"></script>
   <script src="game.js"></script>
   <script src="gameLogic.js"></script>
-  <script src="messageService.js"></script>
-  <script src="scaleBodyService.js"></script>
-  <!-- for local testing purposes ! -->
-  <script src="http://yoav-zibin.github.io/emulator/platform.js"></script>
-    <link rel="stylesheet" type="text/css" href="game.css">
+  <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
+  <link rel="stylesheet" type="text/css" href="game.css">
 </head>
 <body ng-controller="Ctrl">
 <table cellpadding="0">
   <tr ng-repeat="row in board track by $index">
     <td ng-repeat="cell in row track by $index"
     ng-click="cellClicked($parent.$index, $index)">
-    <!--display the base board tile for every cell-->
     <div ng-class="{cell:true}">
-      <img src = "img/piece2.jpg" div ng-class="{cell:true}" ng-show = "oddSum($parent.$index, $index)">
+      <img src = "img/piece2.jpg" div ng-class ="{cell:true}" ng-show = "oddSum($parent.$index, $index)">
       <img src = "img/piece1.jpg" ng-class = "{cell:true}" ng-show = "evenSum($parent.$index, $index)">
-      <img src = "img/bDisk.png" ng-class="{posit2: true}" ng-show= "isBlack($parent.$index, $index)">
-      <img src = "img/wDisk.png" ng-class="{posit3: true}" ng-show= "isWhite($parent.$index, $index)">
+      <img src = "img/bDisk.png" ng-class ="{posit2: true, rot: true, slowlyAppear: shouldSlowlyAppear($parent.$index, $index)}" ng-show = "isBlack($parent.$index, $index)">
+      <img src = "img/wDisk.png" ng-class ="{posit3: true,  rot: true, slowlyAppear: shouldSlowlyAppear($parent.$index, $index)}" ng-show = "isWhite($parent.$index, $index)">
     </div>
     </td>
   </tr>

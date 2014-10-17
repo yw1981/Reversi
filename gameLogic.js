@@ -1,7 +1,8 @@
 /*jslint devel: true, indent: 1 */
 /*global console*/
+
   'use strict';
-angular.module('myApp.gameLogic', []).service('gameLogic', function() {
+angular.module('myApp').service('gameLogic', function()  {
 
   var maxRow = 7;
   var maxCol = 7;
@@ -578,9 +579,25 @@ return store;
         );
   }
 
+  function createComputerMove(board, turnIndexBeforeMove){
+    var possibleMoves = [];
+    var i, j;
+    for(i = 0; i < 8; i ++){
+      for(j =0; j < 8; j ++){
+        try{
+           possibleMoves.push(createMove(board, i, j, turnIndexBeforeMove));
+       } catch(e){
+         //invalid move, don't add it to the array.
+       }
+     }
+    }
+    var randomMove = possibleMoves[Math.floor(Math.random()*possibleMoves.length)];
+    return randomMove;
+  }
 
   this.createMove = createMove;
   this.isMoveOk = isMoveOk;
   this.exampleGame = exampleGame;
   this.riddles = riddles;
+  this.createComputerMove = createComputerMove;
 });
