@@ -1,6 +1,5 @@
 table{
   margin: 0;
-  border-collapse: collapse;
   display: block;
   border-spacing: 0;
   padding: 0;
@@ -8,11 +7,6 @@ table{
 }
 tr{
   padding: 0;
-  border: 3px solid black;
-}
-
-td{
-border: 1px solid black;
 }
 
 body {
@@ -23,7 +17,7 @@ body {
   position: relative;
   float: left;
   z-index: 10;
-  border: none;
+  border-style: none;
   width: 70px;
   height: 70px;
 }
@@ -40,11 +34,11 @@ body {
 .posit3{
   position: absolute;
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 58px;
+  height: 58px;
   z-index: 20;
-  left: 18%;
-  top: 22%;
+  left: 7%;
+  top: 14%;
 }
 
 

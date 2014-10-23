@@ -36,7 +36,7 @@ angular.module('myApp', ['ngTouch'])
         if($scope.turnIndex === 0){
           moveAudioB.play();
         }
-        else{
+        else if($scope.turnIndex === 1){
           moveAudioW.play();
         }
       }
@@ -63,9 +63,12 @@ angular.module('myApp', ['ngTouch'])
     try {
         var move = gameLogic.createMove($scope.board, row, col, $scope.turnIndex);
         $scope.isYourTurn = false; // to prevent making another move
+
         gameService.makeMove(move);
       } catch (e) {
-        $log.info(["Cell is already full in position or you have to form a sandwich!", row, col]);
+        alert("Invalid move: hacker found");
+        $scope.isYourTurn = false;
+        $log.info(["wrong move", row, col]);
         return;
       }
     };

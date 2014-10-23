@@ -494,7 +494,7 @@ angular.module('myApp').service('gameLogic', function()  {
          return false;
        }
    } catch (e) {
-     return false;
+      return false;
    }
    return true;
   }
