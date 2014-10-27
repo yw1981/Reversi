@@ -18,14 +18,14 @@
 </head>
 <body ng-controller="Ctrl">
 <table cellpadding="0">
-  <tr ng-repeat="row in board track by $index">
-    <td ng-repeat="cell in row track by $index"
-    ng-click="cellClicked($parent.$index, $index)">
+  <tr ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7]">
+    <td ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7]"
+    ng-click="cellClicked(row, col)">
     <div ng-class="{cell:true}">
-      <img src = "img/piece2.jpg" div ng-class ="{cell:true}" ng-show = "oddSum($parent.$index, $index)">
-      <img src = "img/piece1.jpg" ng-class = "{cell:true}" ng-show = "evenSum($parent.$index, $index)">
-      <img src = "img/bDisk.png" ng-class ="{posit2: true, rot: true, slowlyAppear: shouldSlowlyAppear($parent.$index, $index)}" ng-show = "isBlack($parent.$index, $index)">
-      <img src = "img/wDisk.png" ng-class ="{posit3: true,  rot: true, slowlyAppear: shouldSlowlyAppear($parent.$index, $index)}" ng-show = "isWhite($parent.$index, $index)">
+      <img src = "img/piece2.jpg" div ng-class ="{cell:true}" ng-show = "oddSum(row, col)">
+      <img src = "img/piece1.jpg" ng-class = "{cell:true}" ng-show = "evenSum(row, col)">
+      <img src = "img/bDisk.png" ng-class ="{posit2: true, rot: true, slowlyAppear: shouldSlowlyAppear(row, col)}" ng-show = "isBlack(row, col)">
+      <img src = "img/wDisk.png" ng-class ="{posit3: true,  rot: true, slowlyAppear: shouldSlowlyAppear(row, col)}" ng-show = "isWhite(row, col)">
     </div>
     </td>
   </tr>
