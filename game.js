@@ -47,7 +47,7 @@ angular.module('myApp', ['ngTouch'])
         // Is it the computer's turn?
         if ($scope.isYourTurn
             && params.playersInfo[params.yourPlayerIndex].playerId === '') {
-          // Wait 500 milliseconds until animation ends.
+          $scope.isYourTurn = false;
           $timeout(sendComputerMove, 1100);
         }
     }
