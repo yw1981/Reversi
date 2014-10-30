@@ -66,8 +66,6 @@ angular.module('myApp', ['ngTouch'])
 
         gameService.makeMove(move);
       } catch (e) {
-        alert("Invalid move: hacker found");
-        $scope.isYourTurn = false;
         $log.info(["wrong move", row, col]);
         return;
       }
