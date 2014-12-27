@@ -18,8 +18,8 @@ body {
   float: left;
   z-index: 10;
   border-style: none;
-  width: 5.46%;
-  height: 12.32%;
+  width: 70px;
+  height: 70px;
 }
 .posit2{
   position: absolute;
