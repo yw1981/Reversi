@@ -32,7 +32,7 @@ body {
 }
 
 .posit3{
-  position: absolute;
+  position: relative;
   display: block;
   width: 58px;
   height: 58px;
