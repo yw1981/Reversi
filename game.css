@@ -10,7 +10,7 @@ tr{
 }
 
 body {
-  background-image: url('img/bg.jpg');
+  background: #2B2B2B;
     overflow:hidden;
     width: 100%;
     height: 100%;
