@@ -14,7 +14,7 @@ body {
     overflow:hidden;
 }
 .cell{
-  position: relative;
+  position: absolute;
   float: left;
   z-index: 10;
   border-style: none;
