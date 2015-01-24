@@ -5,7 +5,7 @@ angular.module('myApp', ['ngTouch'])
       $window, $scope, $log, $timeout,
       gameService, scaleBodyService, gameLogic) {
 
-      var moveAudioB = new Audio('audio/move1.mp3');
+      var moveAudioB = new Audio('audio/move.mp3');
       moveAudioB.load();
       var moveAudioW = new Audio('audio/move1.mp3');
       moveAudioW.load();
