@@ -5,11 +5,6 @@ angular.module('myApp', ['ngTouch'])
       $window, $scope, $log, $timeout,
       gameService, scaleBodyService, gameLogic) {
 
-      var moveAudioB = new Audio('audio/move.mp3');
-      moveAudioB.load();
-      var moveAudioW = new Audio('audio/move.mp3');
-      moveAudioW.load();
-
     function sendComputerMove(){
       gameService.makeMove(
         gameLogic.createComputerMove($scope.board, $scope.turnIndex));
@@ -30,15 +25,6 @@ angular.module('myApp', ['ngTouch'])
                          ['', '', '', '', '', '', '', ''],
                          ['', '', '', '', '', '', '', '']
                        ];
-      }
-
-      else {
-        if($scope.turnIndex === 0){
-          moveAudioB.play();
-        }
-        else if($scope.turnIndex === 1){
-          moveAudioW.play();
-        }
       }
 
         $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
