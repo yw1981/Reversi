@@ -1,34 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<!-- build:[manifest] game.appcache -->
+<html lang="en" ng-app="myApp" ng-strict-di>
+<!-- /build -->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Reversi</title>
-  <meta name="description" content="Reversi game">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.min.js"></script>
-  <script src="game.js"></script>
-  <script src="gameLogic.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
-  <link rel="stylesheet" type="text/css" href="game.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Reversi</title>
+    <meta name="description" content="Reversi game">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script>
+    <!-- /build -->
+
+    <!-- build:js dist/everything.min.js -->
+    <script src="gameLogic.js"></script>
+    <script src="game.js"></script>
+    <!-- /build -->
+
+    <!-- build:js http://yoav-zibin.github.io/emulator/dist/dragAndDropListeners.min.js -->
+    <script src="http://yoav-zibin.github.io/emulator/examples/drag_n_drop/dragAndDropListeners.js"></script>
+    <!-- /build -->
+
+    <!-- build:js http://yoav-zibin.github.io/emulator/dist/gameServices.min.js -->
+    <script src="http://yoav-zibin.github.io/emulator/resizeGameAreaService.js"></script>
+    <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
+    <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
+    <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
+    <!-- /build -->
+
+    <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
+    <link rel="stylesheet" type="text/css" href="game.css">
+
 </head>
-<body ng-controller="Ctrl">
-<table cellpadding="0">
-  <tr ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7]">
-    <td ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7]"
-    ng-click="cellClicked(row, col)">
-    <div ng-class="{cell:true}">
-      <img src = "img/piece2.jpg" div ng-class ="{cell:true}" ng-show = "oddSum(row, col)">
-      <img src = "img/piece1.jpg" ng-class = "{cell:true}" ng-show = "evenSum(row, col)">
-      <img src = "img/bDisk.png" ng-class ="{posit2: true, rot: true, slowlyAppear: shouldSlowlyAppear(row, col)}" ng-show = "isBlack(row, col)">
-      <img src = "img/wDisk.png" ng-class ="{posit3: true,  rot: true, slowlyAppear: shouldSlowlyAppear(row, col)}" ng-show = "isWhite(row, col)">
+<body ng-cloak ng-controller="Ctrl">
+
+<div id="gameArea">
+    <img ng-src="res/board.jpg" width="100%" height="100%">
+
+    <div style="position:absolute; top:0; bottom:0; left:0; right:0; width:100%; height:100%;">
+
+        <div ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7]"
+             style="position:absolute; top:{{row * 12.5}}%; left:0; width:100%; height:12.5%;">
+            <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7]"
+                 style="position:absolute; top:0; left:{{col * 12.5}}%; width:12.5%; height:100%;"
+                 id="{{'div_' + row + 'x' + col}}"
+                 ng-click="cellClicked(row, col)">
+                    <img src="res/pieceBlack.png"
+                         ng-class="{piece:true, slowlyAppear: shouldSlowlyAppear(row, col)}"
+                         ng-show="isBlack(row, col)">
+                    <img src="res/pieceWhite.png"
+                         ng-class="{piece:true, slowlyAppear: shouldSlowlyAppear(row, col)}"
+                         ng-show="isWhite(row, col)">
+            </div>
+        </div>
     </div>
-    </td>
-  </tr>
-</table>
+</div>
 </body>
 </html>
