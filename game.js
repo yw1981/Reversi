@@ -17,6 +17,15 @@ angular.module('myApp').controller('Ctrl',
 
             window.handleDragEvent = handleDragEvent;
 
+            //make game size scalable
+            resizeGameAreaService.setWidthToHeight(1);
+
+            /**
+             * handle the Drag Event using DragAndDropListener
+             * @param type
+             * @param clientX
+             * @param clientY
+             */
             function handleDragEvent(type, clientX, clientY) {
                 // Center point in gameArea
                 var x = clientX - gameArea.offsetLeft;
@@ -28,12 +37,20 @@ angular.module('myApp').controller('Ctrl',
                     return;
                 }
 
-                clickToDragPiece.style.display = "inline";
-                draggingLines.style.display = "inline";
-
                 // Inside gameArea. Let's find the containing square's row and col
                 var col = Math.floor(colsNum * x / gameArea.clientWidth);
                 var row = Math.floor(rowsNum * y / gameArea.clientHeight);
+
+                // check if can place piece here
+                // and decide whether to show the piece on drag or not
+                if (isMoveLegal(row, col)){
+                    clickToDragPiece.style.display = "inline";
+                    draggingLines.style.display = "inline";
+                }
+                else{
+                    clickToDragPiece.style.display = "none";
+                    draggingLines.style.display = "inline";
+                }
 
                 var centerXY = getSquareCenterXY(row, col);
                 verticalDraggingLine.setAttribute("x1", centerXY.x);
@@ -52,6 +69,10 @@ angular.module('myApp').controller('Ctrl',
                 }
             }
 
+            /**
+             * get Square Width Height of board (square position)
+             * @returns {{width: number, height: number}}
+             */
             function getSquareWidthHeight() {
                 return {
                     width: gameArea.clientWidth / colsNum,
@@ -59,11 +80,23 @@ angular.module('myApp').controller('Ctrl',
                 };
             }
 
+            /**
+             * get Square Top Left position
+             * @param row
+             * @param col
+             * @returns {{top: number, left: number}}
+             */
             function getSquareTopLeft(row, col) {
                 var size = getSquareWidthHeight();
                 return {top: row * size.height, left: col * size.width}
             }
 
+            /**
+             * get Square Center X and Y
+             * @param row
+             * @param col
+             * @returns {{x: number, y: number}}
+             */
             function getSquareCenterXY(row, col) {
                 var size = getSquareWidthHeight();
                 return {
@@ -72,9 +105,11 @@ angular.module('myApp').controller('Ctrl',
                 };
             }
 
-            //make game size scalable
-            resizeGameAreaService.setWidthToHeight(1);
-
+            /**
+             * drag Done listener
+             * @param row
+             * @param col
+             */
             function dragDone(row, col) {
 
                 if (!$scope.isYourTurn) {
@@ -105,11 +140,33 @@ angular.module('myApp').controller('Ctrl',
             $scope.rowsNum = rowsNum;
             $scope.colsNum = colsNum;
 
+            /**
+             * check if can place piece at the position
+             * @param row
+             * @param col
+             * @returns {boolean}
+             */
+            function isMoveLegal(row, col) {
+                try {
+                    gameLogic.createMove($scope.board, row, col, $scope.turnIndex);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            /**
+             * send the computer move
+             */
             function sendComputerMove() {
                 gameService.makeMove(
                     gameLogic.createComputerMove($scope.board, $scope.turnIndex));
             }
 
+            /**
+             * updateUI function
+             * @param params
+             */
             function updateUI(params) {
                 // check if commented: $scope.jsonState = angular.toJson(params.stateAfterMove, true);
                 $scope.board = params.stateAfterMove.board;
@@ -138,24 +195,12 @@ angular.module('myApp').controller('Ctrl',
                 }
             }
 
+            //fake update UI for game initial
             updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
 
-            //$scope.cellClicked = function (row, col) {
-            //    $log.info(["Clicked on cell:", row, col]);
-            //    if (!$scope.isYourTurn) {
-            //        return;
-            //    }
-            //
-            //    try {
-            //        var move = gameLogic.createMove($scope.board, row, col, $scope.turnIndex);
-            //        $scope.isYourTurn = false; // to prevent making another move
-            //
-            //        gameService.makeMove(move);
-            //    } catch (e) {
-            //        $log.info(["wrong move", row, col]);
-            //        return;
-            //    }
-            //};
+            $scope.getPreviewSrc = function () {
+                return  $scope.turnIndex === 1 ? "res/pieceWhite.png" : "res/pieceBlack.png";
+            };
 
             $scope.shouldSlowlyAppear = function (row, col) {
                 return $scope.delta !== undefined

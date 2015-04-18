@@ -4,28 +4,6 @@
     top: 10%;
     left: 10%;
 }
-.cell {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-}
-
-.posit2 {
-    position: absolute;
-    display: block;
-    z-index: 20;
-    left: 15%;
-    top: 20%;
-}
-
-.posit3 {
-    position: absolute;
-    display: block;
-    z-index: 20;
-    left: 7%;
-    top: 14%;
-}
 
 /******** ANIMATION **********/
 
