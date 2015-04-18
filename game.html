@@ -36,6 +36,29 @@
 <body ng-cloak ng-controller="Ctrl">
 
 <div id="gameArea">
+
+    <svg id="draggingLines" width="100%" height="100%"
+         style="display:none; position:absolute; z-index: 30;">
+        <line id="horizontalDraggingLine"
+              x1="0" y1="12.5%"
+              x2="100%" y2="12.5%"
+              stroke="red"
+              stroke-width="1%"/>
+        <line id="verticalDraggingLine"
+              y1="0" x1="12.5%"
+              y2="100%" x2="12.5%"
+              stroke="red"
+              stroke-width="1%"/>
+    </svg>
+
+    <svg ng-attr-width="{{100 / colsNum}}%" ng-attr-height="{{100 / rowsNum}}%"
+         id="clickToDragPiece"
+         style="display:none; position:absolute; z-index: 31;">
+
+        <circle cx="50%" cy="50%" r="40%"
+                stroke="green" stroke-width="4" fill="red" />
+    </svg>
+
     <img ng-src="res/board.jpg" width="100%" height="100%">
 
     <div style="position:absolute; top:0; bottom:0; left:0; right:0; width:100%; height:100%;">
@@ -44,8 +67,8 @@
              style="position:absolute; top:{{row * 12.5}}%; left:0; width:100%; height:12.5%;">
             <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7]"
                  style="position:absolute; top:0; left:{{col * 12.5}}%; width:12.5%; height:100%;"
-                 id="{{'div_' + row + 'x' + col}}"
-                 ng-click="cellClicked(row, col)">
+                 id="{{'div_' + row + 'x' + col}}">
+                 <!--ng-click="cellClicked(row, col)">-->
                     <img src="res/pieceBlack.png"
                          ng-class="{piece:true, slowlyAppear: shouldSlowlyAppear(row, col)}"
                          ng-show="isBlack(row, col)">
