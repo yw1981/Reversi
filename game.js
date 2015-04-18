@@ -46,10 +46,14 @@ angular.module('myApp').controller('Ctrl',
                 if (isMoveLegal(row, col)){
                     clickToDragPiece.style.display = "inline";
                     draggingLines.style.display = "inline";
+                    horizontalDraggingLine.style.stroke = "green";
+                    verticalDraggingLine.style.stroke = "green";
                 }
                 else{
                     clickToDragPiece.style.display = "none";
                     draggingLines.style.display = "inline";
+                    horizontalDraggingLine.style.stroke = "red";
+                    verticalDraggingLine.style.stroke = "red";
                 }
 
                 var centerXY = getSquareCenterXY(row, col);
