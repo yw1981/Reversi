@@ -1,9 +1,9 @@
 angular.module('myApp').controller('Ctrl',
     ['$scope', '$log', '$timeout',
         'gameService', 'gameLogic',
-        'resizeGameAreaService',
+        'resizeGameAreaService', 'dragAndDropService',
         function ($scope, $log, $timeout,
-                  gameService, gameLogic, resizeGameAreaService) {
+                  gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
 
             'use strict';
 
@@ -15,7 +15,7 @@ angular.module('myApp').controller('Ctrl',
             var rowsNum = 8;
             var colsNum = 8;
 
-            window.handleDragEvent = handleDragEvent;
+            dragAndDropService.addDragListener("gameArea", handleDragEvent);
 
             //make game size scalable
             resizeGameAreaService.setWidthToHeight(1);

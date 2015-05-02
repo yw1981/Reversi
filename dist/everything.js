@@ -5,14 +5,30 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     var maxRow = 7;
     var maxCol = 7;
 
+    /**
+     * check if 2 object are equal by using angular
+     * @param object1
+     * @param object2
+     * @returns {*}
+     */
     function isEqual(object1, object2) {
         return angular.equals(object1, object2);
     }
 
+    /**
+     * copy object by using angular
+     * @param object
+     * @returns {XMLList|XML|*}
+     */
     function copyObject(object) {
         return angular.copy(object);
     }
 
+    /**
+     * check if a square is empty
+     * @param coordinates
+     * @returns {boolean}
+     */
     function isEmptySquare(coordinates) {
         if (coordinates.board [coordinates.row][coordinates.col] === '') {
             return true;
@@ -20,6 +36,15 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return false;
     }
 
+    /**
+     * desired Adj Piece
+     * @param board
+     * @param row
+     * @param col
+     * @param directions
+     * @param colourOpponentPiece
+     * @returns {boolean}
+     */
     function desiredAdjPiece(board, row, col, directions, colourOpponentPiece) {
 
         if (row > 0) {
@@ -76,6 +101,16 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return false;
     }
 
+    /**
+     * sandwich
+     * @param board
+     * @param row
+     * @param col
+     * @param directions
+     * @param colourPlayerPiece
+     * @param colourOpponentPiece
+     * @returns {*}
+     */
     function sandwich(board, row, col, directions, colourPlayerPiece, colourOpponentPiece) {
         var ct = 0;
         var tempBoard = copyObject(board);
@@ -341,6 +376,14 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return {count: ct, status: false};
     }
 
+    /**
+     * createMove
+     * @param board
+     * @param row
+     * @param col
+     * @param turnIndexBeforeMove
+     * @returns {*[]}
+     */
     function createMove(board, row, col, turnIndexBeforeMove) {
         if (board === undefined) {
             board = [
@@ -397,6 +440,13 @@ angular.module('myApp',[]).factory('gameLogic', function () {
             {set: {key: 'delta', value: {row: row, col: col}}}];
     }
 
+    /**
+     * has Valid Moves
+     * @param colourPlayerPiece
+     * @param colourOpponentPiece
+     * @param board
+     * @returns {boolean}
+     */
     function hasValidMoves(colourPlayerPiece, colourOpponentPiece, board) {
         var flag = 0;
         for (var i = 0; i <= maxRow; i++) {
@@ -428,6 +478,11 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return false;
     }
 
+    /**
+     * check if the game is over
+     * @param board
+     * @returns {*}
+     */
     function gameOver(board) {
         var emptyCells = 0;
         var result;
@@ -450,6 +505,11 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return {status: false};
     }
 
+    /**
+     * get Winner
+     * @param board
+     * @returns {*}
+     */
     function getWinner(board) {
         var wCount = 0;
         var bCount = 0;
@@ -472,6 +532,11 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return 'T';
     }
 
+    /**
+     * check if a move is ok, find hacks
+     * @param params
+     * @returns {boolean}
+     */
     function isMoveOk(params) {
         var turnIndexBeforeMove = params.turnIndexBeforeMove;
         var stateBeforeMove = params.stateBeforeMove;
@@ -492,6 +557,13 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return true;
     }
 
+    /**
+     * exampleMoves
+     * @param initTurnIndex
+     * @param initState
+     * @param arrayOfRowColComment
+     * @returns {Array}
+     */
     function exampleMoves(initTurnIndex, initState, arrayOfRowColComment) {
         var state = initState;
         var temp;
@@ -519,7 +591,10 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         return store;
     }
 
-
+    /**
+     * example Game
+     * @returns {Array}
+     */
     function exampleGame() {
         return (exampleMoves(0,
             {
@@ -544,6 +619,10 @@ angular.module('myApp',[]).factory('gameLogic', function () {
             ]));
     }
 
+    /**
+     * riddles
+     * @returns {*[]}
+     */
     function riddles() {
         return ([
             exampleMoves(1,
@@ -579,6 +658,12 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         );
     }
 
+    /**
+     * create Computer Move
+     * @param board
+     * @param turnIndexBeforeMove
+     * @returns {*}
+     */
     function createComputerMove(board, turnIndexBeforeMove) {
         var possibleMoves = [];
         var i, j;
@@ -606,9 +691,9 @@ angular.module('myApp',[]).factory('gameLogic', function () {
 ;angular.module('myApp').controller('Ctrl',
     ['$scope', '$log', '$timeout',
         'gameService', 'gameLogic',
-        'resizeGameAreaService',
+        'resizeGameAreaService', 'dragAndDropService',
         function ($scope, $log, $timeout,
-                  gameService, gameLogic, resizeGameAreaService) {
+                  gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
 
             'use strict';
 
@@ -620,7 +705,7 @@ angular.module('myApp',[]).factory('gameLogic', function () {
             var rowsNum = 8;
             var colsNum = 8;
 
-            window.handleDragEvent = handleDragEvent;
+            dragAndDropService.addDragListener("gameArea", handleDragEvent);
 
             //make game size scalable
             resizeGameAreaService.setWidthToHeight(1);
