@@ -1,4 +1,5 @@
-angular.module('myApp',[]).factory('gameLogic', function () {
+angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
+    .factory('gameLogic', function() {
 
     'use strict';
 
@@ -689,11 +690,12 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     };
 });
 ;angular.module('myApp').controller('Ctrl',
-    ['$scope', '$log', '$timeout',
+    ['$scope', '$log', '$timeout', '$translate',
         'gameService', 'gameLogic',
         'resizeGameAreaService', 'dragAndDropService',
-        function ($scope, $log, $timeout,
-                  gameService, gameLogic, resizeGameAreaService, dragAndDropService) {
+        function ($scope, $log, $timeout, $translate,
+                  gameService, gameLogic,
+                  resizeGameAreaService, dragAndDropService) {
 
             'use strict';
 
@@ -706,6 +708,8 @@ angular.module('myApp',[]).factory('gameLogic', function () {
             var colsNum = 8;
 
             dragAndDropService.addDragListener("gameArea", handleDragEvent);
+
+            console.log("Translation of 'RULES_OF_REVERSI' is " + $translate('RULES_OF_REVERSI'));
 
             //make game size scalable
             resizeGameAreaService.setWidthToHeight(1);
