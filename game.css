@@ -3,13 +3,10 @@
     width: 80%;
     top: 10%;
     left: 10%;
-}
-
-/******** ANIMATION **********/
-
-.slowlyAppear {
-    -webkit-animation: slowlyAppear 0.5s ease-in-out forwards; /* Chrome, Safari, Opera */
-    animation: slowlyAppear 0.5s ease-in-out forwards;
+    -webkit-animation: slowlyAppear1 1s linear; /* Chrome, Safari, Opera */
+    -moz-animation: slowlyAppear1 1s linear;
+    -o-animation: slowlyAppear1 1s linear;
+    animation: slowlyAppear1 1s linear;
 }
 
 .rot {
@@ -17,50 +14,44 @@
     animation: coinflip 1s linear;
 }
 
-@-webkit-keyframes coinflip {
-    0% {
-        -webkit-transform: rotateY(0deg);
-
-    }
-    100% {
-        -webkit-transform: rotateY(360deg);
-    }
-}
-
-@keyframes coinflip {
-    0% {
-        transform: rotateY(0deg);
-    }
-    100% {
-        transform: rotateY(360deg);
-    }
-}
+/*
+*slowlyAppear
+*/
 
 /* Chrome, Safari, Opera */
-@-webkit-keyframes slowlyAppear {
+@-webkit-keyframes slowlyAppear1 {
     from {
-        opacity: 0;
+        opacity: 0.1;
     }
     to {
         opacity: 1;
     }
 }
 
-@keyframes slowlyAppear {
+@-moz-keyframes slowlyAppear1 {
     from {
-        opacity: 0;
+        opacity: 0.1;
     }
     to {
         opacity: 1;
     }
 }
 
-.selectB:hover {
-    filter: brightness(200%);
-    -webkit-filter: brightness(200%);
+@-o-keyframes slowlyAppear1 {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-.selectP:hover {
-    filter: brightness(135%);
-    -webkit-filter: brightness(135%);
+@keyframes slowlyAppear1 {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
 }
+
