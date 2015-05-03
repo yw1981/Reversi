@@ -107,7 +107,9 @@ module.exports = function (grunt) {
                         'res/HelpSlide1.png',
                         'res/HelpSlide2.png',
                         'res/HelpSlide3.png',
-                        'res/HelpSlide4.png'
+                        'res/HelpSlide4.png',
+                        'languages/en.js',
+                        'languages/zh.js'
                     ],
                     network: ['dist/everything.min.js.map', 'dist/everything.js'],
                     timestamp: true
