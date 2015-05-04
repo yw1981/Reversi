@@ -725,7 +725,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
                 var x = clientX - gameArea.offsetLeft;
                 var y = clientY - gameArea.offsetTop;
                 // Is outside gameArea?
-                if (x < 0 || y < 0 || x >= gameArea.clientWidth || y >= gameArea.clientHeight) {
+                if (!$scope.isYourTurn || x < 0 || y < 0 || x >= gameArea.clientWidth || y >= gameArea.clientHeight) {
                     clickToDragPiece.style.display = "none";
                     draggingLines.style.display = "none";
                     return;
