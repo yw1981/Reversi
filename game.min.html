@@ -16,9 +16,7 @@
 
     <script src="dist/everything.min.js"></script>
 
-    <script>window.angularTranslationLanguages = ['en', 'zh'];</script>
-
-    <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js"></script>
+    <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.3.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
     <link rel="stylesheet" type="text/css" href="game.css">
@@ -39,7 +37,7 @@
                 <button type="button" class="close" ng-click="isHelpModalShown = false" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">
-                    {{ 'RULES_OF_REVERSI' | translate }}
+                    {{ 'RULES_OF_REVERSI' }}
                 </h4>
             </div>
             <div class="modal-body">
@@ -48,7 +46,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE1' | translate }}
+                                    {{ 'RULES_SLIDE1' }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide1.png" style="height:60px;">
@@ -60,7 +58,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE2' | translate }}
+                                    {{ 'RULES_SLIDE2' }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide2.png" style="height:60px;">
@@ -72,7 +70,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE3' | translate }}
+                                    {{ 'RULES_SLIDE3' }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide3.png" style="height:60px;">
@@ -84,7 +82,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE4' | translate }}
+                                    {{ 'RULES_SLIDE4' }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide4.png" style="height:60px;">
@@ -96,7 +94,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="isHelpModalShown = false">
-                    {{ 'CLOSE' | translate }}
+                    {{ 'CLOSE' }}
                 </button>
             </div>
         </div>

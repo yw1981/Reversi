@@ -1,7 +1,32 @@
-angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
-    .factory('gameLogic', function() {
+type Board = string[][];
+interface BoardDelta {
+  row: number;
+  col: number;
+}
+interface IState {
+  board?: Board;
+  delta?: BoardDelta;
+}
+interface ICoordinates {
+  board: Board;
+  row: number;
+  col: number;
+}
 
-    'use strict';
+interface IResult {
+  count?: number;
+  tempBoard?: Board;
+  status?: boolean;
+  winner?: string;
+}
+
+interface IRowColComment {
+  row: number;
+  col: number;
+  comment: string;
+}
+
+module gameLogic {
 
     var maxRow = 7;
     var maxCol = 7;
@@ -12,7 +37,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param object2
      * @returns {*}
      */
-    function isEqual(object1, object2) {
+    function isEqual(object1: any, object2: any):boolean {
         return angular.equals(object1, object2);
     }
 
@@ -21,7 +46,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param object
      * @returns {XMLList|XML|*}
      */
-    function copyObject(object) {
+    function copyObject(object: any): any {
         return angular.copy(object);
     }
 
@@ -30,8 +55,8 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param coordinates
      * @returns {boolean}
      */
-    function isEmptySquare(coordinates) {
-        if (coordinates.board [coordinates.row][coordinates.col] === '') {
+    function isEmptySquare(coordinates: ICoordinates): boolean {
+        if (coordinates.board[coordinates.row][coordinates.col] === '') {
             return true;
         }
         return false;
@@ -46,7 +71,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param colourOpponentPiece
      * @returns {boolean}
      */
-    function desiredAdjPiece(board, row, col, directions, colourOpponentPiece) {
+    function desiredAdjPiece(board: Board, row: number, col: number, directions: string[], colourOpponentPiece: string): boolean {
 
         if (row > 0) {
             if (board [row - 1][col] === colourOpponentPiece) {
@@ -112,9 +137,9 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param colourOpponentPiece
      * @returns {*}
      */
-    function sandwich(board, row, col, directions, colourPlayerPiece, colourOpponentPiece) {
-        var ct = 0;
-        var tempBoard = copyObject(board);
+    function sandwich(board: Board, row: number, col: number, directions: string[], colourPlayerPiece: string, colourOpponentPiece: string):IResult  {
+        var ct: number = 0;
+        var tempBoard: Board = copyObject(board);
         for (var i = 0; i < directions.length; i++) {
             switch (directions [i]) {
                 case 'V1':
@@ -385,7 +410,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param turnIndexBeforeMove
      * @returns {*[]}
      */
-    function createMove(board, row, col, turnIndexBeforeMove) {
+    export function createMove(board: Board, row: number, col: number, turnIndexBeforeMove: number) {
         if (board === undefined) {
             board = [
                 ['', '', '', '', '', '', '', ''],
@@ -402,19 +427,19 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
             throw new Error("One can only make a move in an empty position!");
             ;
         }
-        var colourOpponentPiece = (turnIndexBeforeMove === 0 ? 'W' : 'B');
-        var directions = [];
+        var colourOpponentPiece: string = (turnIndexBeforeMove === 0 ? 'W' : 'B');
+        var directions: string[] = [];
         if (!desiredAdjPiece(board, row, col, directions, colourOpponentPiece)) {
             throw new Error("One can only make a move next to the opponent's piece!");
         }
-        var colourPlayerPiece = (turnIndexBeforeMove === 0 ? 'B' : 'W');
+        var colourPlayerPiece: string = (turnIndexBeforeMove === 0 ? 'B' : 'W');
         var result = sandwich(board, row, col, directions, colourPlayerPiece, colourOpponentPiece);
         if (!result.status) {
             throw new Error("One must sandwich opponent's pieces on every move!");
         }
 
-        var firstOperation;
-        var boardAfterMove = copyObject(board);
+        var firstOperation: IOperation;
+        var boardAfterMove: Board = copyObject(board);
         boardAfterMove [row][col] = (turnIndexBeforeMove === 0 ? 'B' : 'W');
         var end = gameOver(result.tempBoard);
         if (end.status) {
@@ -426,8 +451,8 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
             };
         }
         else {
-            var toBeOpponent = turnIndexBeforeMove == 0 ? 'W' : 'B';
-            var currentPlayer = turnIndexBeforeMove == 0 ? 'B' : 'W';
+            var toBeOpponent: string = turnIndexBeforeMove == 0 ? 'W' : 'B';
+            var currentPlayer: string = turnIndexBeforeMove == 0 ? 'B' : 'W';
             var turn = hasValidMoves(toBeOpponent, currentPlayer, result.tempBoard);
             if (turn) {
                 firstOperation = {setTurn: {turnIndex: 1 - turnIndexBeforeMove}};
@@ -448,14 +473,14 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param board
      * @returns {boolean}
      */
-    function hasValidMoves(colourPlayerPiece, colourOpponentPiece, board) {
-        var flag = 0;
+    function hasValidMoves(colourPlayerPiece: string, colourOpponentPiece: string, board: Board): boolean {
+        var flag: number = 0;
         for (var i = 0; i <= maxRow; i++) {
             for (var j = 0; j <= maxCol; j++) {
                 if (!isEmptySquare({board: board, row: i, col: j})) {
                     continue;
                 }
-                var directions = [];
+                var directions: string[] = [];
                 if (!desiredAdjPiece(board, i, j, directions, colourOpponentPiece)) {
                     continue;
                 }
@@ -484,9 +509,9 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param board
      * @returns {*}
      */
-    function gameOver(board) {
-        var emptyCells = 0;
-        var result;
+    function gameOver(board: Board): IResult {
+        var emptyCells: number = 0;
+        var result: string;
         for (var i = 0; i <= maxRow; i++) {
             for (var j = 0; j <= maxCol; j++) {
                 if (board [i][j] === '') {
@@ -511,7 +536,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param board
      * @returns {*}
      */
-    function getWinner(board) {
+    function getWinner(board: Board): string {
         var wCount = 0;
         var bCount = 0;
         for (var i = 0; i <= maxRow; i++) {
@@ -538,7 +563,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param params
      * @returns {boolean}
      */
-    function isMoveOk(params) {
+    export function isMoveOk(params: IIsMoveOk): boolean {
         var turnIndexBeforeMove = params.turnIndexBeforeMove;
         var stateBeforeMove = params.stateBeforeMove;
         var board = stateBeforeMove.board;
@@ -565,10 +590,10 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param arrayOfRowColComment
      * @returns {Array}
      */
-    function exampleMoves(initTurnIndex, initState, arrayOfRowColComment) {
-        var state = initState;
-        var temp;
-        var store = [];
+    function exampleMoves(initTurnIndex: number, initState: IState, arrayOfRowColComment: IRowColComment[]): IIsMoveOk {
+        var state: IState = initState;
+        var temp: IMove;
+        var store: IIsMoveOk;
         var turnIndex = initTurnIndex;
 
         for (var i = 0; i < arrayOfRowColComment.length; i++) {
@@ -578,14 +603,14 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
                 rowColComment.col, turnIndex);
 
             var stateAfterMove = {board: temp[1].set.value, delta: temp[2].set.value};
-            store.push({
+            store = {
                 stateBeforeMove: state,
                 stateAfterMove: stateAfterMove,
                 turnIndexBeforeMove: turnIndex,
                 turnIndexAfterMove: temp[0].setTurn.turnIndex,
                 comment: {en: rowColComment.comment},
                 move: temp
-            });
+            };
             turnIndex = temp[0].setTurn.turnIndex;
             state = stateAfterMove;
         }
@@ -596,7 +621,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * example Game
      * @returns {Array}
      */
-    function exampleGame() {
+    export function exampleGame(): IIsMoveOk {
         return (exampleMoves(0,
             {
                 board: [['', '', 'B', 'W', 'W', 'W', '', ''],
@@ -620,11 +645,12 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
             ]));
     }
 
+
     /**
      * riddles
      * @returns {*[]}
      */
-    function riddles() {
+    export function riddles() {
         return ([
             exampleMoves(1,
                 {
@@ -665,11 +691,10 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
      * @param turnIndexBeforeMove
      * @returns {*}
      */
-    function createComputerMove(board, turnIndexBeforeMove) {
-        var possibleMoves = [];
-        var i, j;
-        for (i = 0; i < 8; i++) {
-            for (j = 0; j < 8; j++) {
+    export function createComputerMove(board: Board, turnIndexBeforeMove: number): IMove {
+        var possibleMoves:IMove[] = [];
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
                 try {
                     possibleMoves.push(createMove(board, i, j, turnIndexBeforeMove));
                 } catch (e) {
@@ -681,11 +706,15 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap'])
         return randomMove;
     }
 
-    return {
-        createMove: createMove,
-        isMoveOk: isMoveOk,
-        exampleGame: exampleGame,
-        riddles: riddles,
-        createComputerMove: createComputerMove
-    };
+
+}
+
+angular.module('myApp', [ 'ngTouch', 'ui.bootstrap','gameServices'])
+    .factory('gameLogic', function() {
+   return {
+     createMove: gameLogic.createMove,
+     isMoveOk: gameLogic.isMoveOk,
+     exampleGame: gameLogic.exampleGame,
+     riddles: gameLogic.riddles,
+     createComputerMove: gameLogic.createComputerMove   };
 });

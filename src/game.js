@@ -1,10 +1,9 @@
 angular.module('myApp').controller('Ctrl',
-    ['$scope', '$log', '$timeout', '$translate',
-        'gameService', 'gameLogic',
-        'resizeGameAreaService', 'dragAndDropService',
-        function ($scope, $log, $timeout, $translate,
-                  gameService, gameLogic,
-                  resizeGameAreaService, dragAndDropService) {
+    ['$scope', '$log', '$timeout',
+        'gameLogic',
+
+        function ($scope, $log, $timeout,
+                  gameLogic) {
 
             'use strict';
 
@@ -17,8 +16,6 @@ angular.module('myApp').controller('Ctrl',
             var colsNum = 8;
 
             dragAndDropService.addDragListener("gameArea", handleDragEvent);
-
-            console.log("Translation of 'RULES_OF_REVERSI' is " + $translate('RULES_OF_REVERSI'));
 
             //make game size scalable
             resizeGameAreaService.setWidthToHeight(1);
@@ -251,7 +248,7 @@ angular.module('myApp').controller('Ctrl',
             }
 
             gameService.setGame({
-                gameDeveloperEmail: "xiaodongbo627@gmail.com",
+                gameDeveloperEmail: "yw1981@nyu.edu",
                 minNumberOfPlayers: 2,
                 maxNumberOfPlayers: 2,
                 exampleGame: gameLogic.exampleGame(),
