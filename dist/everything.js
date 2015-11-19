@@ -865,7 +865,7 @@ angular.module('myApp', ['ngTouch', 'ui.bootstrap', 'gameServices'])
             }
 
             gameService.setGame({
-                gameDeveloperEmail: "xiaodongbo627@gmail.com",
+                gameDeveloperEmail: "yw1981@nyu.edu",
                 minNumberOfPlayers: 2,
                 maxNumberOfPlayers: 2,
                 exampleGame: gameLogic.exampleGame(),

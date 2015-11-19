@@ -43,11 +43,11 @@ interface IState {
   [index: string]: any;
 }
 interface IIsMoveOk {
-  move: IMove;
-  turnIndexBeforeMove : number;
-  turnIndexAfterMove: number;
-  stateBeforeMove: IState;
-  stateAfterMove: IState;
+  move?: IMove;
+  turnIndexBeforeMove ?: number;
+  turnIndexAfterMove ?: number;
+  stateBeforeMove ?: IState;
+  stateAfterMove ?: IState;
   numberOfPlayers?: number;
   comment?: {
     en: string;
@@ -60,14 +60,19 @@ interface IPlayerInfo {
 }
 declare type PlayMode = string | number;
 interface IUpdateUI extends IIsMoveOk {
-  playersInfo: IPlayerInfo[];
+  playersInfo?: IPlayerInfo[];
   yourPlayerIndex: number;
-  playMode: PlayMode;
-  moveNumber: number;
-  randomSeed: string;
+  playMode?: PlayMode;
+  moveNumber?: number;
+  randomSeed?: string;
   endMatchScores?: number[];
 }
 interface IGame {
+  gameDeveloperEmail: string;
+  minNumberOfPlayers: number;
+  maxNumberOfPlayers: number;
+  exampleGame: IIsMoveOk;
+  riddles: any[];
   isMoveOk(move: IIsMoveOk): boolean;
   updateUI(update: IUpdateUI): void;
 }
@@ -130,3 +135,39 @@ interface ResizeMapAreaParams {
   originalHeight: number;
 }
 declare function resizeMapArea(params: ResizeMapAreaParams): void;
+
+
+
+declare type Board = string[][];
+declare var board: Board;
+interface BoardDelta {
+  row: number;
+  col: number;
+}
+interface IState {
+  board?: Board;
+  delta?: BoardDelta;
+}
+interface ICoordinates {
+  board: Board;
+  row: number;
+  col: number;
+}
+
+interface IResult {
+  count?: number;
+  tempBoard?: Board;
+  status?: boolean;
+  winner?: string;
+}
+
+interface IRowColComment {
+  row: number;
+  col: number;
+  comment: string;
+}
+
+interface IXY {
+   x: string;
+   y: string;
+}

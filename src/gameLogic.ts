@@ -1,30 +1,4 @@
-type Board = string[][];
-interface BoardDelta {
-  row: number;
-  col: number;
-}
-interface IState {
-  board?: Board;
-  delta?: BoardDelta;
-}
-interface ICoordinates {
-  board: Board;
-  row: number;
-  col: number;
-}
 
-interface IResult {
-  count?: number;
-  tempBoard?: Board;
-  status?: boolean;
-  winner?: string;
-}
-
-interface IRowColComment {
-  row: number;
-  col: number;
-  comment: string;
-}
 
 module gameLogic {
 
