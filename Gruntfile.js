@@ -12,6 +12,7 @@ module.exports = function(grunt) {
     "1024x1024",
     "1024x500",
     "512x512",
+    "320x320",
     "50x50",
     "200x200",
     "320x50",
@@ -215,13 +216,15 @@ module.exports = function(grunt) {
     },
   });
 
+  grunt.loadNpmTasks('grunt-autoprefixer');
   require('load-grunt-tasks')(grunt);
 
   // Default task(s).
   grunt.registerTask('default', [
+      'karma',
       'copy',
       'concat', 'postcss', 'uglify',
       'processhtml', 'manifest',
-      'http-server']);
+      'http-server', 'protractor']);
 
 };
