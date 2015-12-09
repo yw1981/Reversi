@@ -28,7 +28,7 @@
 
     <!-- build:js dist/everything.min.js -->
     <script crossorigin="anonymous" src="ts_output_readonly_do_NOT_change_manually/src/gameLogic.js"></script>
-    <script crossorigin="anonymous" src="src/game.js"></script>
+    <script crossorigin="anonymous" src="ts_output_readonly_do_NOT_change_manually/src/game.js"></script>
     <!-- /build -->
 
     <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.3.min.js"></script>
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="game.css">
 
 </head>
-<body ng-cloak ng-controller="Ctrl">
+<body ng-cloak>
 
 <div style="position:absolute; bottom:5px; left: 5px; z-index:10;" >
         <span ng-click="isHelpModalShown = true"
@@ -52,7 +52,7 @@
                 <button type="button" class="close" ng-click="isHelpModalShown = false" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">
-                    {{ 'RULES_OF_REVERSI' }}
+                    {{ 'RULES_OF_REVERSI' | translate }}
                 </h4>
             </div>
             <div class="modal-body">
@@ -61,7 +61,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE1' }}
+                                    {{ 'RULES_SLIDE1' | translate }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide1.png" style="height:60px;">
@@ -73,7 +73,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE2' }}
+                                    {{ 'RULES_SLIDE2' | translate }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide2.png" style="height:60px;">
@@ -85,7 +85,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE3' }}
+                                    {{ 'RULES_SLIDE3' | translate }}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide3.png" style="height:60px;">
@@ -97,7 +97,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    {{ 'RULES_SLIDE4' }}
+                                    {{ 'RULES_SLIDE4' | translate}}
                                 </td>
                                 <td>
                                     <img src="res/HelpSlide4.png" style="height:60px;">
@@ -109,7 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="isHelpModalShown = false">
-                    {{ 'CLOSE' }}
+                    {{ 'CLOSE' | translate}}
                 </button>
             </div>
         </div>
@@ -132,9 +132,9 @@
               stroke-width="1%"/>
     </svg>
 
-    <img ng-attr-width="{{100 / colsNum}}%" ng-attr-height="{{100 / rowsNum}}%"
+    <img ng-attr-width="{{100 / game.colsNum}}%" ng-attr-height="{{100 / game.rowsNum}}%"
          id="clickToDragPiece"
-         ng-src="{{getPreviewSrc()}}"
+         ng-src="{{game.getPreviewSrc()}}"
          style="display:none; position:absolute; z-index: 31; "/>
 
     <div id="background">
@@ -151,10 +151,10 @@
                     <!--ng-click="cellClicked(row, col)">-->
                     <img src="res/pieceBlack.png"
                          ng-class="{piece:true}"
-                         ng-show="isBlack(row, col)">
+                         ng-show="game.isBlack(row, col)">
                     <img src="res/pieceWhite.png"
                          ng-class="{piece:true}"
-                         ng-show="isWhite(row, col)">
+                         ng-show="game.isWhite(row, col)">
                 </div>
             </div>
         </div>

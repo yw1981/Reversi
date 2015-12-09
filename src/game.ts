@@ -1,22 +1,15 @@
 module game{
     //'use strict';
-
-
     // function ($scope, $log, $timeout,
     //       gameLogic) {
 
-    var draggingLines = document.getElementById("draggingLines");
-    var horizontalDraggingLine = document.getElementById("horizontalDraggingLine");
-    var verticalDraggingLine = document.getElementById("verticalDraggingLine");
-    var clickToDragPiece = document.getElementById("clickToDragPiece");
-    var gameArea = document.getElementById("gameArea");
     export var rowsNum = 8;
     export var colsNum = 8;
 
     var board: Board;
     var delta: BoardDelta;
     var turnIndex: number;
-    var isYourTurn: boolean;
+    var isYourTurn = false;
 
     /**
      * handle the Drag Event using DragAndDropListener
@@ -25,6 +18,11 @@ module game{
      * @param clientY
      */
     function handleDragEvent(type: string, clientX: number, clientY: number) {
+      var draggingLines = document.getElementById("draggingLines");
+      var horizontalDraggingLine = document.getElementById("horizontalDraggingLine");
+      var verticalDraggingLine = document.getElementById("verticalDraggingLine");
+      var clickToDragPiece = document.getElementById("clickToDragPiece");
+      var gameArea = document.getElementById("gameArea");
         // Center point in gameArea
         var x = clientX - gameArea.offsetLeft;
         var y = clientY - gameArea.offsetTop;
@@ -69,43 +67,48 @@ module game{
             draggingLines.style.display = "none";
             dragDone(row, col);
         }
+
+
+        /**
+         * get Square Width Height of board (square position)
+         * @returns {{width: number, height: number}}
+         */
+        function getSquareWidthHeight() {
+            return {
+                width: gameArea.clientWidth / colsNum,
+                height: gameArea.clientHeight / rowsNum
+            };
+        }
+
+
+
+        /**
+         * get Square Top Left position
+         * @param row
+         * @param col
+         * @returns {{top: number, left: number}}
+         */
+        function getSquareTopLeft(row: number, col:number) {
+            var size = getSquareWidthHeight();
+            return {top: row * size.height, left: col * size.width}
+        }
+
+        /**
+         * get Square Center X and Y
+         * @param row
+         * @param col
+         * @returns {{x: number, y: number}}
+         */
+        function getSquareCenterXY(row: number, col: number): IXY {
+            var size = getSquareWidthHeight();
+            return {
+                x: (col * size.width + size.width / 2).toString(),
+                y: (row * size.height + size.height / 2).toString()
+            };
+        }
+
     }
 
-    /**
-     * get Square Width Height of board (square position)
-     * @returns {{width: number, height: number}}
-     */
-    function getSquareWidthHeight() {
-        return {
-            width: gameArea.clientWidth / colsNum,
-            height: gameArea.clientHeight / rowsNum
-        };
-    }
-
-    /**
-     * get Square Top Left position
-     * @param row
-     * @param col
-     * @returns {{top: number, left: number}}
-     */
-    function getSquareTopLeft(row: number, col:number) {
-        var size = getSquareWidthHeight();
-        return {top: row * size.height, left: col * size.width}
-    }
-
-    /**
-     * get Square Center X and Y
-     * @param row
-     * @param col
-     * @returns {{x: number, y: number}}
-     */
-    function getSquareCenterXY(row: number, col: number): IXY {
-        var size = getSquareWidthHeight();
-        return {
-            x: (col * size.width + size.width / 2).toString(),
-            y: (row * size.height + size.height / 2).toString()
-        };
-    }
 
     /**
      * drag Done listener
@@ -114,7 +117,7 @@ module game{
      */
     function dragDone(row:number , col: number):void {
 
-        if (isYourTurn) {
+        if (!isYourTurn) {
             return;
         }
 
@@ -187,6 +190,7 @@ module game{
         // Is it the computer's turn?
         if (isYourTurn
             && params.playersInfo[params.yourPlayerIndex].playerId === '') {
+            log.info("set isYourTurn to false in update UI");
             isYourTurn = false;
             $timeout(sendComputerMove, 1000);
         }
@@ -266,17 +270,29 @@ module game{
 
 }
 
+//
+// angular.module('myApp').controller('Ctrl',
+//     ['$scope', '$log', '$timeout',
+//         'gameLogic', function () {
+//           $rootScope['game'] = game;
+//           // any translation?
+//           game.init();
+//
+//     }]);
 
-angular.module('myApp').controller('Ctrl',
-    ['$scope', '$log', '$timeout',
-        'gameLogic', function () {
+    angular.module('myApp',  ['ngTouch', 'ui.bootstrap', 'gameServices'])
+      .run(function() {
           $rootScope['game'] = game;
-          // any translation?
+          translate.setLanguage('en',{
+          "RULES_OF_REVERSI":"Rules of Reversi",
+          "RULES_SLIDE1":"Game is on an 8×8 uncheckered board.There are sixty-four identical game pieces called disks,which are light on one side and dark on the other.",
+          "RULES_SLIDE2":"During a play, any disks of the opponent's color that are in a straight line and bounded by the disk just placed and another disk of the current player's color are turned over to the current player's color.",
+          "RULES_SLIDE3":"It's not legal to put a piece on a spot that would not result any piece color change.",
+          "RULES_SLIDE4":"The object of the game is to have the majority of disks turned to display your color when the last playable empty square is filled. The player has more piece in the board win the game.",
+          "CLOSE":"Close"
+          });
           game.init();
-
-    }]);
-
-
+      });
 // angular.module('myApp', ['$scope', '$log', '$timeout', '$rootScope', 'gameLogic'] )
 //   .run( function() {
 //       $rootScope['game'] = game;

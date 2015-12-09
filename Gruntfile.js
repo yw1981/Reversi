@@ -219,10 +219,9 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', [
-      'karma',
       'copy',
       'concat', 'postcss', 'uglify',
       'processhtml', 'manifest',
-      'http-server', 'protractor']);
+      'http-server']);
 
 };
